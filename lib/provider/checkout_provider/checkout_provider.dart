@@ -72,4 +72,15 @@ class CheckOutNotifier extends StateNotifier<CheckOutState> {
           addressModel: addressModel);
     }
   }
+
+    void startLoader() {
+        state = state.copyWith(isLoading: true);
+
+  }
+
+    void stopLoader() {
+      state = state.copyWith(isLoading: false);
+
+    }
+
 }

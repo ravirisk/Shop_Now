@@ -11,6 +11,7 @@ import 'package:shop_now/utils/app_color.dart';
 import '../../constant/app_constant.dart';
 import '../../model/address_model.dart';
 import '../../provider/cart_provider/cart_provider.dart';
+import '../../provider/order_provider/order_provider.dart';
 import '../../utils/app_bar/app_bar.dart';
 import '../../utils/custom_model_bottom_sheet.dart';
 import '../../utils/text_builder.dart';
@@ -26,6 +27,7 @@ class CheckOutScreen extends ConsumerWidget {
     final paymentModel = ref.watch(checkOutProvider).paymentModel;
     final addressModel = ref.watch(checkOutProvider).addressModel;
     final disbale = ref.watch(checkOutProvider).disableCheckOutButton ?? true;
+    final isLoading = ref.watch(checkOutProvider).isLoading;
 
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
@@ -33,72 +35,78 @@ class CheckOutScreen extends ConsumerWidget {
           appBarTitle: AppConstant.checkOut,
         ),
         body: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(children: [
-          ListView.separated(
-            padding: const EdgeInsets.all(15),
-            itemCount: productList.length,
-            shrinkWrap: true,
-            physics: const ScrollPhysics(),
-            itemBuilder: (BuildContext context, int i) {
-              return CheckOutProductCard(cart: productList[i]);
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10.0);
-            },
-          ),
-          const SizedBox(height: 15.0),
-          addressModel == null
-              ? checkoutRow(
-                  ref: ref,
-                  context: context,
-                  AppConstant.addAddress,
-                )
-              : InkWell(
-                  onTap: () {
-                    customModalBottomSheet(
-                      context,
-                      height: MediaQuery.of(context).size.height * 0.92,
-                      child: AddressForm(
-                        onSubmit: (AddressModel value) {
-                          ref.read(checkOutProvider.notifier).addAddress(value);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    );
-                  },
-                  child: AddressWidget(model: addressModel)),
-          getDivider(),
-          paymentModel == null
-              ? checkoutRow(
-                  ref: ref,
-                  context: context,
-                  AppConstant.addCard,
-                  trailingWidget: const Icon(
-                    Icons.payment,
-                  ),
-                )
-              : payment(paymentModel, context, ref),
-          getDivider(),
-          const SizedBox(height: 10.0),
-          totalWidget(
-            'Total Price',
-            trailingText: "\$${totalPrice.toStringAsFixed(2)}",
-          ),
-          totalWidget(
-            'Delivery Charge',
-            trailingText: "\$${AppConstant.deliveryCharges.toStringAsFixed(2)}",
-          ),
-          totalWidget(
-            'Taxes',
-            trailingText: "\$${AppConstant.taxes.toStringAsFixed(2)}",
-          ),
-          totalWidget(
-            'Sub Total',
-            trailingText: "\$${getSubTotal(totalPrice)}",
-          ),
-          placeOrderButton(totalPrice, size, context, ref, disbale),
-        ]))));
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: Column(children: [
+                    ListView.separated(
+                      padding: const EdgeInsets.all(15),
+                      itemCount: productList.length,
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemBuilder: (BuildContext context, int i) {
+                        return CheckOutProductCard(cart: productList[i]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(height: 10.0);
+                      },
+                    ),
+                    const SizedBox(height: 15.0),
+                    addressModel == null
+                        ? checkoutRow(
+                            ref: ref,
+                            context: context,
+                            AppConstant.addAddress,
+                          )
+                        : InkWell(
+                            onTap: () {
+                              customModalBottomSheet(
+                                context,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.92,
+                                child: AddressForm(
+                                  onSubmit: (AddressModel value) {
+                                    ref
+                                        .read(checkOutProvider.notifier)
+                                        .addAddress(value);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              );
+                            },
+                            child: AddressWidget(model: addressModel)),
+                    getDivider(),
+                    paymentModel == null
+                        ? checkoutRow(
+                            ref: ref,
+                            context: context,
+                            AppConstant.addCard,
+                            trailingWidget: const Icon(
+                              Icons.payment,
+                            ),
+                          )
+                        : payment(paymentModel, context, ref),
+                    getDivider(),
+                    const SizedBox(height: 10.0),
+                    totalWidget(
+                      'Total Price',
+                      trailingText: "\$${totalPrice.toStringAsFixed(2)}",
+                    ),
+                    totalWidget(
+                      'Delivery Charge',
+                      trailingText:
+                          "\$${AppConstant.deliveryCharges.toStringAsFixed(2)}",
+                    ),
+                    totalWidget(
+                      'Taxes',
+                      trailingText: "\$${AppConstant.taxes.toStringAsFixed(2)}",
+                    ),
+                    totalWidget(
+                      'Sub Total',
+                      trailingText: "\$${getSubTotal(totalPrice)}",
+                    ),
+                    placeOrderButton(totalPrice, size, context, ref, disbale),
+                  ]))));
   }
 }
 
@@ -260,17 +268,22 @@ Widget placeOrderButton(double total, Size size, BuildContext context,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         onPressed: () async {
           if (!disable) {
+            ref.read(checkOutProvider.notifier).startLoader();
             final products = ref.read(cartListProvider).productList;
-            final subtotal = total + AppConstant.deliveryCharges + AppConstant.taxes;
-         final error = await  ref.read(checkOutProvider.notifier).createOrder(products,
-             total, 'card', subtotal);
-           if (error == null) {
-             Navigator.push(context,
-                 MaterialPageRoute(
-                     builder: (_) => const OrderAcceptedScreen()));
-            }  else {
-             ToastMessage().showToast(context, error);
-           }
+            final subtotal =
+                total + AppConstant.deliveryCharges + AppConstant.taxes;
+            final error = await ref
+                .read(checkOutProvider.notifier)
+                .createOrder(products, total, 'card', subtotal);
+            ref.read(checkOutProvider.notifier).stopLoader();
+            if (error == null) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const OrderAcceptedScreen()));
+            } else {
+              ToastMessage().showToast(context, error);
+            }
           }
           // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const Home()), (route) => false);
         },

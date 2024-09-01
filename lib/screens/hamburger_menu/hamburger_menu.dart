@@ -94,8 +94,7 @@ class HamburgerMenu extends ConsumerWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const ProviderScope(
-                                        child: OrderScreen())));
+                                    builder: (_) => const  OrderScreen()));
                           },
                           leading: const Icon(
                             Icons.history,

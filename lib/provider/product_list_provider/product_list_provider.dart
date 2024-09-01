@@ -16,7 +16,7 @@ class ProductListNotifier extends StateNotifier<ProductListState> {
   List<ProductModel> productItems = [];
 
   loadProducts() async {
-    // productItems.clear();
+    productItems.clear();
     state = state.copyWith(isLoading: true);
     final productList = await ProductListRepo().fetchProducts();
     productItems = productList;

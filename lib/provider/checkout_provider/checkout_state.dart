@@ -7,22 +7,26 @@ class CheckOutState extends Equatable {
   final bool? disableCheckOutButton;
   final AddressModel? addressModel;
   final PaymentModel? paymentModel;
+  final bool isLoading;
 
   const CheckOutState({
     this.disableCheckOutButton = true,
     this.addressModel,
     this.paymentModel,
+    this.isLoading = false
   });
 
   CheckOutState copyWith({
     bool? disableCheckOutButton,
     AddressModel? addressModel,
     PaymentModel? paymentModel,
+    bool? isLoading
   }) {
     return CheckOutState(
       disableCheckOutButton: disableCheckOutButton ?? this.disableCheckOutButton,
       addressModel: addressModel ?? addressModel,
-        paymentModel: paymentModel ?? paymentModel
+        paymentModel: paymentModel ?? paymentModel,
+      isLoading: isLoading ?? this.isLoading
     );
   }
 

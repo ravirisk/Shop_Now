@@ -46,7 +46,7 @@ class HomeFilterButton extends ConsumerWidget {
       icon: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 8, right: 0),
+            padding: const EdgeInsets.only(top: 0, right: 0),
             child: Icon(
               selectedCategory == AppConstant.allCategory
                   ? Icons.filter_alt_off
