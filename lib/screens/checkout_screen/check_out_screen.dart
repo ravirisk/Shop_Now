@@ -11,7 +11,6 @@ import 'package:shop_now/utils/app_color.dart';
 import '../../constant/app_constant.dart';
 import '../../model/address_model.dart';
 import '../../provider/cart_provider/cart_provider.dart';
-import '../../provider/order_provider/order_provider.dart';
 import '../../utils/app_bar/app_bar.dart';
 import '../../utils/custom_model_bottom_sheet.dart';
 import '../../utils/text_builder.dart';

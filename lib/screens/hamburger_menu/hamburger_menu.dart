@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_now/provider/order_provider/order_provider.dart';
+import 'package:shop_now/repository/auth/auth_repo.dart';
 import 'package:shop_now/screens/home/home_screen.dart';
 import 'package:shop_now/screens/orders/order_screen.dart';
 
@@ -35,11 +36,11 @@ class HamburgerMenu extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextBuilder(
-                                text: AppConstant.appName,
+                                text: AuthRepo().user.displayName,
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold),
                             TextBuilder(
-                                text: AppConstant.dummyEmail,
+                                text: AuthRepo().user.email,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.normal),
                           ],

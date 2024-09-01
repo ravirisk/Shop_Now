@@ -22,6 +22,7 @@ class AppConstant {
   static String deliveryFees = 'Delivery Fees';
   static String allCategory = 'All';
   static String tax = 'Taxes';
+  static String loginKey = 'login';
   static String returnDes =
       'Free pre-paid returns and exchanges for orders shipped to the US. Get refunded faster with easy online returns and print a FREE pre-paid return ShopNow@ online! Return or exchange any unused or defective merchandise by mail or at one of our US or Canada store locations. Made to order items cannot be canceled, exchange or returned.';
   static double defaultPadding = 16.0;

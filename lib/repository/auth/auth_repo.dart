@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_now/constant/app_constant.dart';
 
 class AuthRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,6 +17,7 @@ class AuthRepo {
         password: password,
       );
      user.updateDisplayName(name);
+     setLoginStatus();
 
       return null;
     } on FirebaseAuthException catch (e) {
@@ -45,5 +48,16 @@ class AuthRepo {
       return e.toString();
     }
     return null;
+  }
+
+  setLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(AppConstant.loginKey, true);
+  }
+
+  getLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool status = prefs.getBool(AppConstant.loginKey) ?? false;
+    return status;
   }
 }
