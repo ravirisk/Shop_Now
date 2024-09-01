@@ -1,6 +1,6 @@
 # shop_now
 
-A new Flutter project.
+Flutter E-commerece app
 
 ## Getting Started
 
