@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185501209277",
+    "project_id": "shoplift-ed2ec",
+    "storage_bucket": "shoplift-ed2ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185501209277:android:9cdf27e2d58e571757ddd4",
+        "android_client_info": {
+          "package_name": "com.example.shop_now"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdOuK0aRUbpNFd235cIo-cWlnSv-DkPB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
