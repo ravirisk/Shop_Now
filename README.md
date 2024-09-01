@@ -2,15 +2,35 @@
 
 Flutter E-commerece app
 
-## Getting Started
+## Details
 
-This project is a starting point for a Flutter application.
+Functionality -
+1.Login/SignUp
 
-A few resources to get you started if this is your first Flutter project:
+3.On Home the listing of product is there
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+4.User can also select the category from the filter button
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+5.Product details page is there for all details
+
+6.Cart screen for managing the order
+
+7.Check out with address and add Debit/Credit Card 
+
+8.Order history page
+
+
+ Key Points-
+
+1. For User Login / User Sign Up firebase used for proper authentication
+
+2. All the products coming from the third party api using http call
+ Api - https://fakestoreapi.com/products
+
+3. To Storing the cart product used sqlite for locally
+
+4. To create the order used firebase cloud storage.
+
+5. Riverpod state management have user for managing the state in project
+
+
